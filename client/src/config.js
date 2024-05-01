@@ -1,10 +1,16 @@
 export const apiUrls ={
-    getMovies:"http://localhost:4000/movies/getMovies",
-    addMovies:"http://localhost:4000/movies/addMovie",
+    getMovies:"/movies/getMovies",
+    addMovies:"/movies/addMovie",
+    getMovieById:"/movies/getMovieById",
+    editMovieById:"/movies//editMovie/", ///send ?:_id in params
 
-    getProducers:"http://localhost:4000/producer/getproducer",
-    addProducer:"http://localhost:4000/producer/addProducer",
+    getProducers:"/producer/getproducer",
+    addProducer:"/producer/addProducer",
 
-    getActors:"http://localhost:4000/actors/get_actors",
-    addActor:"http://localhost:4000/actors/add_actor",
+    getActors:"/actors/get_actors",
+    addActor:"/actors/add_actor",
+
+    signUp:"/user",
+    login:"/user/login"
+
 }

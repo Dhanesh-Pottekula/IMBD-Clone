@@ -7,7 +7,7 @@ import CardContent from "@mui/material/CardContent";
 
 import Typography from "@mui/material/Typography";
 import { PencilIcon, PlusIcon } from "@heroicons/react/24/solid";
-function MovieCard({ movie,openPopup }) {
+function MovieCard({ movie,openPopup,index }) {
   return (
     <div className=" min-w-60 m-10  w-1/4 flex-wrap rounded-full">
       <div className=" w-full flex flex-row-reverse">
@@ -21,7 +21,7 @@ function MovieCard({ movie,openPopup }) {
         <CardMedia
           component="img"
           height="194"
-          image={movie?.image}
+          image={movie?.image||`https://picsum.photos/id/${index}/200/300`}
           alt="Paella dish"
         />
         <CardContent>

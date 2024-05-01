@@ -2,6 +2,7 @@ import React from "react";
 
 import { ExclamationTriangleIcon, TrashIcon } from "@heroicons/react/24/solid";
 import useAddMovies from "../hooks/useAddMovies";
+import { useLocation } from "react-router-dom";
 
 export default function AddMovies() {
   const {
@@ -11,9 +12,19 @@ export default function AddMovies() {
     handleProducerSubmit,
     handleActorSubmit,
     onHandleActorFeilds,
+    toNavigate,
   } = useAddMovies();
+  const location = useLocation();
+  const { pathname } = location;
+
   return (
     <>
+        <button
+          className=" fixed top-4 right-4  bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          onClick={toNavigate}
+        >
+          {pathname.includes("createPage") ? " to HomePage" : "Add movie"}
+        </button>
       <div className="w-full flex">
         {/* movie */}
         <div className="flex flex-col flex-wrap bg-white rounded p-5 min-w-64 w-full">
@@ -122,7 +133,6 @@ export default function AddMovies() {
               placeholder="Enter Ranking in Number"
               name="movies"
               onChange={onHandleActorFeilds}
-
             />
 
             <div className="flex items-center gap-1 mt-2 text-red">
@@ -132,7 +142,10 @@ export default function AddMovies() {
           </div>
 
           <div className="md:w-full lg:w-1/5 p-3 mt-4 min-w-64">
-            <button className="bg-purple-500 text-white py-2 px-4 w-full rounded" onClick={handleActorSubmit}>
+            <button
+              className="bg-purple-500 text-white py-2 px-4 w-full rounded"
+              onClick={handleActorSubmit}
+            >
               Add Actor
             </button>
           </div>
@@ -162,7 +175,6 @@ export default function AddMovies() {
               placeholder=" enter movie names sparated by ,"
               name="movies"
               onChange={onHandleProducerFeilds}
-
             />
 
             <div className="flex items-center gap-1 mt-2 text-red">
@@ -172,7 +184,10 @@ export default function AddMovies() {
           </div>
 
           <div className="md:w-full lg:w-1/5 p-3 mt-4 min-w-64">
-            <button className="bg-purple-500 text-white py-2 px-4 w-full rounded" onClick={handleProducerSubmit}>
+            <button
+              className="bg-purple-500 text-white py-2 px-4 w-full rounded"
+              onClick={handleProducerSubmit}
+            >
               Add Producer
             </button>
           </div>

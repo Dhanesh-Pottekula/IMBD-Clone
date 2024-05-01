@@ -3,48 +3,66 @@ import { useDispatch, useSelector } from "react-redux";
 import { AddMovies, getAllMovies } from "../slice/movie";
 import { addProducer } from "../slice/producer";
 import { getAllActors, onAddActor } from "../slice/actor";
+import { useNavigate } from "react-router-dom";
 function useAddMovies() {
-  const [movieDetails, setMovieDetails] = useState({
+  const initialMovieData = {
     title: "",
     description: "",
     rating: 0,
     actors: [],
     producer: "",
-  });
-  const [producerDetails, setProducerDetails] = useState({
+  };
+  const initialProducerData = {
     name: "",
     movies: [],
-  });
-  const [actorDetails, setActorDetails] = useState({
+  };
+  const initialActorData = {
     name: "",
     movies: [],
-  });
+  };
+  const [movieDetails, setMovieDetails] = useState(initialMovieData);
+  const [producerDetails, setProducerDetails] = useState(initialProducerData);
+  const [actorDetails, setActorDetails] = useState(initialActorData);
   const dispatch = useDispatch();
-  const { movieList } = useSelector((state) => state.movie);
-  const {actorList}=useSelector((state)=>state.actor)
-
+  const { movieList,onAddMovieSuccess } = useSelector((state) => state.movie);
+  const { actorList,addActorSuccess } = useSelector((state) => state.actor);
+  const { addproducerSuccess } = useSelector((state) => state.producer);
+  const navigate = useNavigate();
   useEffect(() => {
     onGetAllMovies();
-    onGetAllActors()
+    onGetAllActors();
   }, []);
-
+  useEffect(() => {
+    console.log(onAddMovieSuccess)
+    if(onAddMovieSuccess){
+      setMovieDetails({...initialMovieData});
+    }
+  }, [onAddMovieSuccess]);
+  useEffect(() => {
+    if(addActorSuccess){
+      setActorDetails(initialActorData);
+    }
+  }, [addActorSuccess]);
+  useEffect(() => {
+    if(addproducerSuccess){
+      setProducerDetails(initialProducerData);
+    }
+  }, [addproducerSuccess]);
   const onGetAllMovies = async () => {
     await dispatch(getAllMovies());
   };
-  
+
   const onGetAllActors = async () => {
     await dispatch(getAllActors());
   };
-
 
   const onHandleMovieFeilds = (e) => {
     setMovieDetails({ ...movieDetails, [e.target.name]: e.target.value });
   };
 
   const handleMovieSubmit = async () => {
-    const actorIds=findactorIds(actorList,movieDetails?.actors)
-    const data = { ...movieDetails,actors:actorIds };
-    console.log(data)
+    const actorIds = findactorIds(actorList, movieDetails?.actors);
+    const data = { ...movieDetails, actors: actorIds };
     await dispatch(AddMovies(data));
   };
 
@@ -53,8 +71,8 @@ function useAddMovies() {
   };
 
   const handleProducerSubmit = async () => {
-    const movieIds=findMovieIds(movieList,producerDetails?.movies)
-    const data = { ...producerDetails,movies:movieIds};
+    const movieIds = findMovieIds(movieList, producerDetails?.movies);
+    const data = { ...producerDetails, movies: movieIds };
     await dispatch(addProducer(data));
   };
 
@@ -63,8 +81,8 @@ function useAddMovies() {
   };
 
   const handleActorSubmit = async () => {
-    const movieIds=findMovieIds(movieList,actorDetails?.movies)
-    const data = { ...actorDetails,movies:movieIds};
+    const movieIds = findMovieIds(movieList, actorDetails?.movies);
+    const data = { ...actorDetails, movies: movieIds };
     await dispatch(onAddActor(data));
   };
   const findMovieIds = (movieList, inputArr) => {
@@ -79,7 +97,7 @@ function useAddMovies() {
         movieIds.push(movie._id);
       }
     });
-    return movieIds
+    return movieIds;
   };
   const findactorIds = (actorList, inputArr) => {
     let actorIds = [];
@@ -87,15 +105,17 @@ function useAddMovies() {
       .trim()
       .split(",")
       .map((item) => item.trim());
-      actorArr.forEach((name) => {
+    actorArr.forEach((name) => {
       const actor = actorList.find((actor) => actor?.name === name);
       if (actor) {
         actorIds.push(actor._id);
       }
     });
-    return actorIds
+    return actorIds;
   };
-  
+  const toNavigate = () => {
+    navigate("/");
+  };
   return {
     onHandleMovieFeilds,
     handleMovieSubmit,
@@ -103,6 +123,7 @@ function useAddMovies() {
     handleProducerSubmit,
     handleActorSubmit,
     onHandleActorFeilds,
+    toNavigate,
   };
 }
 

@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { apiUrls } from "../config";
 import axios from 'axios';
+import axiosInstance from "../services/axiosInstance";
 const initialState = {
 actorList:null,
 addActorSuccess:false,
@@ -9,7 +10,7 @@ addActorSuccess:false,
 export const getAllActors = createAsyncThunk(
   "actor/getAllActors",
   async () => {
-    const res = await axios.get(apiUrls.getActors);
+    const res = await axiosInstance.get(apiUrls.getActors);
     const result = await res.data.data;
     return result;
   }
@@ -17,7 +18,7 @@ export const getAllActors = createAsyncThunk(
 export const onAddActor = createAsyncThunk(
   "actor/onAddActor",
   async (data) => {
-    const res = await axios.post(apiUrls.addActor,data);
+    const res = await axiosInstance.post(apiUrls.addActor,data);
     const result = await res.data.data;
     return result;
   }

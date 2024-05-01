@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import MovieCard from "../components/MovieCard";
 import useHomePage from "../hooks/useHomePage";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
@@ -7,114 +7,132 @@ import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 function HomePage() {
   const {
     isOpen,
+    movieDetails,
     movieList,
     openPopup,
     closePopup,
     handleOuterClick,
     onHandleMovieFeilds,
     handleMovieSubmit,
+    ismovieDetailsLoading,
+    toNavigate,
+    logout,
   } = useHomePage();
+const location=useLocation()
+const {pathname}=location
 
-  const navigate = useNavigate();
   return (
     <div className=" bg-slate-100 text-white min-h-screen">
-      <div className=" flex w-screen flex-wrap ">
+      <button className="fixed top-4 right-4 z-10 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={toNavigate}>
+      {pathname.includes("createPage")?"HomePage":"Add movie"}
+    </button>
+     
+      <button className="fixed top-4 left-4 z-10 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={logout}>
+     Logout
+    </button>
+      <div className=" flex w-screen flex-wrap pt-10">
         {Array.isArray(movieList) &&
-          movieList.map((movie) => (
-            <MovieCard key={movie?._id} movie={movie} openPopup={openPopup} />
+          movieList.map((movie,index) => (
+            <MovieCard key={movie?._id} movie={movie} openPopup={openPopup} index={index} />
           ))}
-        {isOpen && (
-          <div
-            id="popup"
-            className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-slate-300 p-8 rounded shadow-lg"
-            onClick={handleOuterClick}
-          >
-            <span
-              className="absolute top-0 right-0 cursor-pointer"
-              onClick={closePopup}
-            ></span>
-            <h2 className="text-xl font-bold mb-4 text-black">Edit Movie</h2>
-            <div className="md:w-full lg:w-1/4 p-3 min-w-64">
-              <input
-                type="text"
-                className="border border-gray-300 rounded-md p-2 w-full"
-                placeholder="Enter Movie Name"
-                name="title"
-                // onChange={onHandleMovieFeilds}
-              />
+        {isOpen &&
+          (ismovieDetailsLoading ? null : (
+            <div
+              id="popup"
+              className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-slate-300 p-8 rounded shadow-lg"
+              onClick={handleOuterClick}
+            >
+              <span
+                className="absolute top-0 right-0 cursor-pointer"
+                onClick={closePopup}
+              ></span>
+              <h2 className="text-xl font-bold mb-4 text-black">Edit Movie</h2>
+              <div className="md:w-full lg:w-1/4 p-3 min-w-64">
+                <input
+                  type="text"
+                  className="border border-gray-300 rounded-md p-2 w-full text-black"
+                  placeholder="Enter Movie Name"
+                  name="title"
+                  onChange={onHandleMovieFeilds}
+                  value={movieDetails?.title}
+                />
 
-              <div className="flex items-center gap-1 mt-2 text-red">
-                <ExclamationTriangleIcon className="h-5 w-5" />
-                <span>error</span>
+                <div className="flex items-center gap-1 mt-2 text-red">
+                  <ExclamationTriangleIcon className="h-5 w-5" />
+                  <span>error</span>
+                </div>
+              </div>
+              <div className="md:w-full lg:w-1/4 p-3 min-w-64">
+                <input
+                  type="text"
+                  className="border border-gray-300 rounded-md p-2 w-full text-black"
+                  placeholder="description"
+                  name="description"
+                  onChange={onHandleMovieFeilds}
+                  defaultValue={movieDetails?.description}
+                />
+
+                <div className="flex items-center gap-1 mt-2 text-red">
+                  <ExclamationTriangleIcon className="h-5 w-5" />
+                  <span>form</span>
+                </div>
+              </div>
+              <div className="md:w-full lg:w-1/4 p-3 min-w-64">
+                <input
+                  type="text"
+                  className="border border-gray-300 rounded-md p-2 w-full text-black"
+                  placeholder="rating"
+                  name="rating"
+                  onChange={onHandleMovieFeilds}
+                  defaultValue={movieDetails?.rating}
+                />
+
+                <div className="flex items-center gap-1 mt-2 text-red">
+                  <ExclamationTriangleIcon className="h-5 w-5" />
+                  <span>form</span>
+                </div>
+              </div>
+              <div className="md:w-full lg:w-1/4 p-3 min-w-64">
+                <input
+                  type="text"
+                  className="border border-gray-300 rounded-md p-2 w-full text-black"
+                  placeholder="Actors"
+                  name="actors"
+                  onChange={onHandleMovieFeilds}
+                  defaultValue={movieDetails?.actors}
+                />
+
+                <div className="flex items-center gap-1 mt-2 text-red">
+                  <ExclamationTriangleIcon className="h-5 w-5" />
+                  <span>form</span>
+                </div>
+              </div>
+              <div className="md:w-full lg:w-1/4 p-3 min-w-64">
+                <input
+                  type="text"
+                  className="border border-gray-300 rounded-md p-2 w-full text-black"
+                  placeholder="Producer"
+                  name="producer"
+                  onChange={onHandleMovieFeilds}
+                  defaultValue={movieDetails?.producer}
+                />
+
+                <div className="flex items-center gap-1 mt-2 text-red">
+                  <ExclamationTriangleIcon className="h-5 w-5" />
+                  <span>form</span>
+                </div>
+              </div>
+
+              <div className="md:w-full lg:w-1/5 p-3 mt-4 min-w-64">
+                <button
+                  className="bg-purple-500 text-white py-2 px-4 w-full rounded"
+                  onClick={handleMovieSubmit}
+                >
+                  Add Movie
+                </button>
               </div>
             </div>
-            <div className="md:w-full lg:w-1/4 p-3 min-w-64">
-              <input
-                type="text"
-                className="border border-gray-300 rounded-md p-2 w-full"
-                placeholder="description"
-                name="description"
-                // onChange={onHandleMovieFeilds}
-              />
-
-              <div className="flex items-center gap-1 mt-2 text-red">
-                <ExclamationTriangleIcon className="h-5 w-5" />
-                <span>form</span>
-              </div>
-            </div>
-            <div className="md:w-full lg:w-1/4 p-3 min-w-64">
-              <input
-                type="text"
-                className="border border-gray-300 rounded-md p-2 w-full"
-                placeholder="rating"
-                name="rating"
-                // onChange={onHandleMovieFeilds}
-              />
-
-              <div className="flex items-center gap-1 mt-2 text-red">
-                <ExclamationTriangleIcon className="h-5 w-5" />
-                <span>form</span>
-              </div>
-            </div>
-            <div className="md:w-full lg:w-1/4 p-3 min-w-64">
-              <input
-                type="text"
-                className="border border-gray-300 rounded-md p-2 w-full"
-                placeholder="Actors"
-                name="actors"
-                // onChange={onHandleMovieFeilds}
-              />
-
-              <div className="flex items-center gap-1 mt-2 text-red">
-                <ExclamationTriangleIcon className="h-5 w-5" />
-                <span>form</span>
-              </div>
-            </div>
-            <div className="md:w-full lg:w-1/4 p-3 min-w-64">
-              <input
-                type="text"
-                className="border border-gray-300 rounded-md p-2 w-full"
-                placeholder="Producer"
-                name="producer"
-                // onChange={onHandleMovieFeilds}
-              />
-
-              <div className="flex items-center gap-1 mt-2 text-red">
-                <ExclamationTriangleIcon className="h-5 w-5" />
-                <span>form</span>
-              </div>
-            </div>
-
-            <div className="md:w-full lg:w-1/5 p-3 mt-4 min-w-64">
-              <button
-                className="bg-purple-500 text-white py-2 px-4 w-full rounded"
-                // onClick={handleMovieSubmit}
-              >
-                Add Movie
-              </button>
-            </div>
-          </div>
-        )}
+          ))}
       </div>
     </div>
   );
