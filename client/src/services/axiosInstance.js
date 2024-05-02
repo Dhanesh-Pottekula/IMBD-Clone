@@ -15,8 +15,6 @@ axiosInstance.interceptors.request.use(
     }, {});
     // Assuming your cookie is named 'auth_token'
     const token = cookies['token'] || '';
-    console.log(token)
-
     // Setting the token in the Authorization header
     config.headers.Authorization = token ? token : null;
       return config;

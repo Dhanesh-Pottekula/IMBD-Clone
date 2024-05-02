@@ -4,19 +4,20 @@ import { editMovie, getAllMovies, getMovieById } from "../slice/movie";
 import { getAllActors } from "../slice/actor";
 import { useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
+import { isNumber, validateActors, validateBlankValue, validateDescription, validateUserName } from "../helpers/formValidators";
 
 function useHomePage() {
   const dispatch = useDispatch();
-
+const intialsFormData={
+  title: "",
+  description: "",
+  rating: 0,
+  actors: "",
+  producer: "",
+}
   const [isOpen, setIsOpen] = useState(false);
   const [editMovieId, setEditMovieId] = useState("");
-  const [movieDetails, setMovieDetails] = useState({
-    title: "",
-    description: "",
-    rating: 0,
-    actors: "",
-    producer: "",
-  });
+  const [movieDetails, setMovieDetails] = useState(intialsFormData);
 
   const { movieList, onAddMovieSuccess, movieData } = useSelector(
     (state) => state.movie
@@ -24,7 +25,7 @@ function useHomePage() {
   const { actorList } = useSelector((state) => state.actor);
   const [isMovieDataLoading, setIsMovieDataLoading] = useState(false);
   const navigate = useNavigate();
-
+const [formErrors,setFormErrors]=useState(null)
   useEffect(() => {
     onGetAllMovies();
     onGetAllActors();
@@ -38,7 +39,7 @@ function useHomePage() {
 
   useEffect(() => {
     if(movieData){
-      const movieNames = movieData?.actors.map((movie) => movie.name);
+      const movieNames = Array.isArray(movieData?.actors) && movieData?.actors.map((movie) => movie.name)||[];
       const movieNamesString = movieNames.join(",");
       setMovieDetails({
         ...movieData,
@@ -69,6 +70,8 @@ function useHomePage() {
   const closePopup = () => {
     setIsOpen(false);
     setEditMovieId("");
+   setMovieDetails(intialsFormData)
+    setFormErrors(null);  
   };
 
   const handleOuterClick = (e) => {
@@ -83,10 +86,44 @@ function useHomePage() {
   const handleMovieSubmit = async (e) => {
     const actorIds = findactorIds(actorList, movieDetails?.actors);
     const data = { ...movieDetails, actors: actorIds };
-    console.log(data);
-    await dispatch(editMovie({data,id:editMovieId}));
-    onGetAllMovies();
-    closePopup();
+    const validationErrors = {};
+
+    Object.keys(data).map((key) => {
+      if (key !== "role") {
+        return validateBlankValue(data[key])
+          ? (validationErrors[key] = `Please Enter the ${key}`)
+          : null;
+      } else {
+        return;
+      }
+    });
+
+      if (!validateUserName(data.title)) {
+        validationErrors.title = "Please Enter the Valid Username";
+      }
+      
+      if (!validateDescription(data.description)) {
+        validationErrors.description = "Please Enter the Valid description";
+      }
+      if (!isNumber(data.rating)) {
+        validationErrors.rating = "Please Enter the Valid number";
+      }
+      if (!validateActors(data.actors)) {
+        validationErrors.actors = "Please Enter the Valid names separated by ,";
+      }
+      if (!validateDescription(data.producer)) {
+        validationErrors.producer = "Please Enter the Valid Name";
+      }
+
+      
+    
+      setFormErrors(validationErrors);
+    if (Object.keys(validationErrors).length === 0) {
+
+    // await dispatch(editMovie({data,id:editMovieId}));
+    // onGetAllMovies();
+    // closePopup();
+    }
   };
   const findactorIds = (actorList, inputArr) => {
     let actorIds = [];
@@ -117,6 +154,7 @@ function useHomePage() {
     movieList,
     openPopup,
     closePopup,
+    formErrors,
     handleOuterClick,
     isOpen,
     onHandleMovieFeilds,
