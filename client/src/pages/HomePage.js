@@ -89,7 +89,7 @@ function HomePage() {
                 />
 
                 {formErrors?.description && (
-                  <div className="flex items-center gap-1 mt-2 text-red">
+                  <div className="flex items-center gap-1 mt-2 text-red-400">
                     <ExclamationTriangleIcon className="h-5 w-5" />
                     <span>{formErrors?.description}</span>
                   </div>
@@ -106,7 +106,7 @@ function HomePage() {
                 />
 
                 {formErrors?.rating && (
-                  <div className="flex items-center gap-1 mt-2 text-red">
+                  <div className="flex items-center gap-1 mt-2 text-red-400">
                     <ExclamationTriangleIcon className="h-5 w-5" />
                     <span>{formErrors?.rating}</span>
                   </div>
@@ -123,7 +123,7 @@ function HomePage() {
                 />
 
                 {formErrors?.actors && (
-                  <div className="flex items-center gap-1 mt-2 text-red">
+                  <div className="flex items-center gap-1 mt-2 text-red-400">
                     <ExclamationTriangleIcon className="h-5 w-5" />
                     <span>{formErrors?.actors}</span>
                   </div>
@@ -140,7 +140,7 @@ function HomePage() {
                 />
 
                 {formErrors?.producer && (
-                  <div className="flex items-center gap-1 mt-2 text-red">
+                  <div className="flex items-center gap-1 mt-2 text-red-400">
                     <ExclamationTriangleIcon className="h-5 w-5" />
                     <span>{formErrors?.producer}</span>
                   </div>
@@ -152,7 +152,7 @@ function HomePage() {
                   className="bg-purple-500 text-white py-2 px-4 w-full rounded"
                   onClick={handleMovieSubmit}
                 >
-                  Add Movie
+                  Edit Movie
                 </button>
               </div>
             </div>

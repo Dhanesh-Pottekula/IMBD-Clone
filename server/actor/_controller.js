@@ -12,7 +12,7 @@ const ActorController = {
       }
 
       return res.status(200).json({
-        message: "Restaurant actors fetched successfully.",
+        message: " actors fetched successfully.",
         data: actors,
       });
     } catch (error) {
@@ -23,13 +23,11 @@ const ActorController = {
     }
   },
   addActor: async (req, res) => {
-    const { name, image, movies } = req.body;
+    const { name, DOB,bio, movies,gender } = req.body;
 
     try {
       const actor = new Actor({
-        name,
-        image,
-        movies,
+        name, DOB,bio, movies,gender
       });
 
       let savedActor = await actor.save();
@@ -40,7 +38,7 @@ const ActorController = {
             { $push: { actors: actor._id } },
             { new: true }
           );
-          console.log(savedMovie)
+    
         })
       );
 

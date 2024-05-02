@@ -14,7 +14,6 @@ async function checkForAuthuntication(req, res, next) {
 
   const user = getUser(token);
   req.user = user;
-  console.log(user)
   const existingUser = await Auth.findById(user?._id);
 
   if (!existingUser) {

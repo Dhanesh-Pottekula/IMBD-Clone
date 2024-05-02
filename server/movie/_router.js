@@ -1,8 +1,10 @@
 const express = require('express');
 const { MovieController } = require('./_controller');
 const { checkForAuthuntication } = require('../middleware/middleware');
+const multer = require("multer");
 
 
+const upload = multer();
 const movieRoute = express.Router();
 movieRoute.get(
   '/getMovies',

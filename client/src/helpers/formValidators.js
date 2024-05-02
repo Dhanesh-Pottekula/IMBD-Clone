@@ -4,8 +4,9 @@ export const validateBlankValue = (value) => {
   };
 
   export const validateUserName = (username) => {
-    var userName = /^([a-z0-9]){4,20}$/gm;
-    return username.match(userName);
+    var descriptionRegex = /^[a-zA-Z\s]+$/;
+
+    return username.match(descriptionRegex);
   };
   
   export const validateInputSize = (value, len) => {
@@ -17,7 +18,7 @@ export const validateBlankValue = (value) => {
   };
   
   export const validateDescription = (description) => {
-    var descriptionRegex = /^[a-zA-Z\s]+$/;
+    var descriptionRegex = /^[a-zA-Z\s.,"]+$/;
     return descriptionRegex.test(description);
   };
   export const validateActors = (input) => {
@@ -25,3 +26,7 @@ export const validateBlankValue = (value) => {
     return regex.test(input);
   };
   
+  export const validateProducer = (name) => {
+    var descriptionRegex = /^[a-zA-Z\s"]+$/;
+    return descriptionRegex.test(name);
+  };

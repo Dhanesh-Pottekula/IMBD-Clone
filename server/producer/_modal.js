@@ -7,6 +7,17 @@ const ProducerSchema = new mongoose.Schema(
     name: {
       type: String,
       required: true,
+    }, DOB: {
+      type: String,
+      required: false,
+    },
+    gender: {
+      type: String,
+      required: true,
+    },
+    bio: {
+      type: String,
+      required: false,
     },
     movies: [{
         type: mongoose.Schema.Types.ObjectId,

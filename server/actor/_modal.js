@@ -7,7 +7,15 @@ const ActorSchema = new mongoose.Schema(
       required: true,
       unique:true
     },
-    image: {
+    DOB: {
+      type: String,
+      required: false,
+    },
+    gender: {
+      type: String,
+      required: true,
+    },
+    bio: {
       type: String,
       required: false,
     },

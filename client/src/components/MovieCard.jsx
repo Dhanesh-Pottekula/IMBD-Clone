@@ -36,7 +36,14 @@ function MovieCard({ movie,openPopup,index }) {
               Actors
             </Typography>
             {Array.isArray(movie?.actors) &&
-              movie?.actors?.map((actor) => actor?.name)}
+              movie?.actors?.map((actor) => `${actor?.name} ,`)}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            <Typography variant="body1" color={"black"} className=" mb-2">
+              {" "}
+              Producer
+            </Typography>
+            {movie?.producer?.name}
           </Typography>
         </CardContent>
       </Card>

@@ -21,7 +21,7 @@ export const login = createAsyncThunk(
   async (data) => {
     const res = await axiosInstance.post(apiUrls.login,data);
     const token = await res.data.token;
-    console.log(token)
+  
     Cookies.set('token',token , { expires: 1 });
     window.location.href='/';
     return token;

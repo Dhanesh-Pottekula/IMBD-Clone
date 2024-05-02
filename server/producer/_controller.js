@@ -11,7 +11,7 @@ const ProducerController = {
       }
 
       return res.status(200).json({
-        message: "Restaurant movies fetched successfully.",
+        message: " movies fetched successfully.",
         data: producer,
       });
     } catch (error) {
@@ -22,11 +22,10 @@ const ProducerController = {
     }
   },
   addProducer: async (req, res) => {
-    const { name, movies } = req.body;
+    const {name, DOB,bio, movies,gender} = req.body;
   
     const producer =  new Producer({
-      name,
-      movies,
+      name, DOB,bio, movies,gender
     });
     const savedProducer = await producer.save()
     if (!savedProducer) {

@@ -4,14 +4,14 @@ import { editMovie, getAllMovies, getMovieById } from "../slice/movie";
 import { getAllActors } from "../slice/actor";
 import { useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
-import { isNumber, validateActors, validateBlankValue, validateDescription, validateUserName } from "../helpers/formValidators";
+import { isNumber, validateActors, validateBlankValue, validateDescription, validateProducer, validateUserName } from "../helpers/formValidators";
 
 function useHomePage() {
   const dispatch = useDispatch();
 const intialsFormData={
   title: "",
   description: "",
-  rating: 0,
+  rating: null,
   actors: "",
   producer: "",
 }
@@ -41,6 +41,7 @@ const [formErrors,setFormErrors]=useState(null)
     if(movieData){
       const movieNames = Array.isArray(movieData?.actors) && movieData?.actors.map((movie) => movie.name)||[];
       const movieNamesString = movieNames.join(",");
+ 
       setMovieDetails({
         ...movieData,
         actors: movieNamesString,
@@ -108,21 +109,20 @@ const [formErrors,setFormErrors]=useState(null)
       if (!isNumber(data.rating)) {
         validationErrors.rating = "Please Enter the Valid number";
       }
-      if (!validateActors(data.actors)) {
+      if (!validateActors( movieDetails?.actors)) {
         validationErrors.actors = "Please Enter the Valid names separated by ,";
       }
-      if (!validateDescription(data.producer)) {
+      if (!validateProducer(data.producer)) {
         validationErrors.producer = "Please Enter the Valid Name";
       }
 
-      
-    
+
       setFormErrors(validationErrors);
     if (Object.keys(validationErrors).length === 0) {
 
-    // await dispatch(editMovie({data,id:editMovieId}));
-    // onGetAllMovies();
-    // closePopup();
+    await dispatch(editMovie({data,id:editMovieId}));
+    onGetAllMovies();
+    closePopup();
     }
   };
   const findactorIds = (actorList, inputArr) => {

@@ -1,10 +1,11 @@
 const { Producer } = require("../producer/_modal");
 const { Movie } = require("./_modal");
 
+
 const MovieController = {
   getMovies: async (req, res) => {
     try {
-      const movies = await Movie.find({}).populate("actors");
+      const movies = await Movie.find({}).populate("actors producer");
       if (!movies) {
         return res.status(400).json({
           error: "Unable to fetch movie list.",
@@ -12,7 +13,7 @@ const MovieController = {
       }
 
       return res.status(200).json({
-        message: "Restaurant movies fetched successfully.",
+        message: " movies fetched successfully.",
         data: movies,
       });
     } catch (error) {
@@ -26,7 +27,8 @@ const MovieController = {
     const { title, description, rating, actors, producer } = req.body;
 
     const producerdoc = await Producer.findOne({ name: producer });
-    const producerId = producerdoc._id;
+    const producerId = producerdoc?._id;
+    
     if (producerId) {
       const movie = new Movie({
         title,
@@ -55,9 +57,8 @@ const MovieController = {
     try {
       const { title, description, rating, actors, producer } = req.body;
       const id = req.params.id.trim();
-      console.log(id);
       const producerdoc = await Producer.findOne({ name: producer });
-      const producerId = producerdoc._id;
+      const producerId = producerdoc?._id;
       if (producerId) {
         const updateData = {
           title,
@@ -66,7 +67,6 @@ const MovieController = {
           actors,
           producer: producerId,
         };
-        console.log(id,updateData)
         await Movie.findByIdAndUpdate({ _id: id }, updateData, { new: true })
           .then((savedMovie) => {
             return res
@@ -98,7 +98,7 @@ const MovieController = {
       }
 
       return res.status(200).json({
-        message: "Restaurant movies fetched successfully.",
+        message: " movies fetched successfully.",
         data: movies,
       });
     } catch (error) {

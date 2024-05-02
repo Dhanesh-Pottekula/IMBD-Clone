@@ -28,7 +28,7 @@ export const getMovieById = createAsyncThunk(
 export const editMovie = createAsyncThunk(
   "movie/editMovie",
   async ({data,id}) => {
-    console.log(id)
+
     const res = await axiosInstance.put(`${apiUrls.editMovieById} ${id}`, data, {
       headers: {
         "Content-Type": "application/json",
